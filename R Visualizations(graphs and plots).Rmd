@@ -1,0 +1,194 @@
+---
+title: "R Visualizations"
+author: "Sita Chandra"
+date: "2023-05-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+<br>
+<br>
+
+```{r loading libraries, warning=FALSE}
+library(tidyverse)
+library("palmerpenguins") #builtin R dataset (penguins)
+```
+<br>
+<br>
+
+#### Loading and viewing the data
+
+```{r loading data}
+data("penguins")
+view(penguins)
+head(penguins)
+```
+
+
+<br>
+<br>
+
+#### Plot graph using 2 features
+
+```{r Plot}
+plot(body_mass_g ~ flipper_length_mm,data=penguins,pch=15)
+```
+
+<br>
+<br>
+
+#### Introducing color to the graphs
+
+```{r plot2}
+par(bg="#F2CD8E")
+plot(bill_length_mm~bill_depth_mm,data=penguins,col="#0B741C",pch=17)
+par(bg = "white")
+```
+
+<br>
+<br>
+
+#### Loading diamonds dataset (builtin)
+
+```{r}
+data("diamonds")
+head(diamonds)
+```
+
+<br>
+<br>
+
+#### Title and subtitle
+
+```{r}
+par(font.lab=3, cex.lab=1.5, font.main=4,
+cex.main=2,font.sub=3)
+plot(price ~ table,data=diamonds,main="Price of the diamonds",sub="The price relative to width of top of the diamond",col.main="#930000",col.sub="#B5AE1A")
+```
+
+<br>
+<br>
+
+#### Axes customization
+
+```{r}
+plot(y~x,data=diamonds,xlab="X-Axis",ylab="Y-Axis", pch = 19,
+     axes = FALSE)
+
+# Add X-axis
+axis(1,
+     col = "blue",        # Axis line color
+     col.ticks = "green", # Ticks color
+     col.axis = "red")    # Labels color
+
+# Add Y-axis
+axis(2,
+     col = "blue",
+     col.ticks = "green",
+     col.axis = "red")
+```
+
+<br>
+<br>
+
+#### Loading Toothgrowth dataset(builtin)
+
+```{r}
+data("ToothGrowth")
+head(ToothGrowth)
+```
+
+<br>
+<br>
+
+#### Text annotations
+
+```{r}
+par(cex.sub=0.8,cex.main=1.6)
+plot(len~dose,data = ToothGrowth,main="Toothgrowth",sub="Tooth growth analysis by dose and duriation of supplements' usage",col.main="#E022C2",col="#8600B6",type="b",lty=2,pch=19)
+text(0.65,6,"dose-0.5")
+text(1.13,13,"dose-1")
+text(1.95,16,"dose-2")
+```
+
+<br>
+<br>
+
+#### Combining graphs
+
+```{r}
+par(mfrow=c(2,2))
+plot(bill_length_mm~flipper_length_mm,data=penguins ,main="Scatterplot of flipper length vs bill length")
+
+hist(diamonds$carat, main="Histogram of carat(diamonds)")
+
+plot(price~depth,data=diamonds, main="Scatterplot of depth vs price(diamonds)")
+
+boxplot(ToothGrowth$len, main="Boxplot of len(Toothgrowth)")
+```
+
+<br>
+<br>
+
+#### Using ggplot2 for visualization
+
+```{r warning=FALSE}
+ggplot(data=penguins)+geom_point(mapping = aes(x=flipper_length_mm,y=body_mass_g))+
+  geom_smooth(mapping = aes(x=flipper_length_mm,y=body_mass_g))
+```
+
+<br>
+<br>
+
+Color coding relative to species
+
+```{r warning=FALSE}
+ggplot(data=penguins)+geom_point(mapping = aes(x=flipper_length_mm,y=body_mass_g,color=species))
+```
+
+<br>
+<br>
+
+Number of species in various islands
+
+```{r}
+ggplot(data=penguins)+geom_bar(mapping=aes(x=species,fill=island))
+```
+
+<br>
+<br>
+
+Using both color and shape attributes
+
+```{r warning=FALSE}
+ggplot(data=penguins)+geom_point(mapping=aes(x=bill_length_mm,y=bill_depth_mm,color=sex,shape=species))
+```
+
+<br>
+<br>
+
+Clarity count relative to cut in diamonds
+
+```{r}
+ggplot(data=diamonds)+geom_bar(mapping=aes(x=clarity,fill=cut))
+```
+
+<br>
+<br>
+
+Len(Toothgrowth)
+
+```{r}
+ggplot(data=ToothGrowth)+geom_line(mapping = (aes(x=dose,y=len)))
+```
+
+```{r}
+ggplot(data=ToothGrowth)+geom_point(mapping=aes(x=dose,y=len,color=supp))
+```
+
